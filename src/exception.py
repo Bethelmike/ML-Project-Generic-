@@ -1,7 +1,7 @@
 import sys
 import traceback
 import logging
-from typing import Optional, Dict
+from typing import Optional, Dict  
 
 logger = logging.getLogger(__name__)
 
@@ -61,15 +61,17 @@ class ModelTrainingException(CustomException):
 class ModelNotFoundException(CustomException):
     """Raised when a required model file is missing."""
     # ...existing code...
+# ...existing code...
 if __name__ == "__main__":
     import logging
     logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(name)s - %(message)s")
 
     try:
-        # simulate underlying error and raise custom exception
-        raise DataIngestionException("Failed to ingest data", FileNotFoundError("data.csv not found"))
+        try:
+            open("nonexistent_file.csv", "r")
+        except Exception as orig:
+            raise DataIngestionException("Failed to ingest data", orig)
     except CustomException as e:
-        # logger.debug inside CustomException.__init__ will show because logging is DEBUG
         print("String:", str(e))
         print("Dict:", e.to_dict())
 # ...existing code...
